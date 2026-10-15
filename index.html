@@ -5,6 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>DXTR | Custom Products</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
@@ -131,7 +134,7 @@ color:rgba(0,0,0,.035)}
 .product-image::before{content:"";position:absolute;width:130px;height:130px;
 border:1px solid rgba(201,164,92,.2);border-radius:50%;animation:pulseCircle 3s ease-in-out infinite}
 @keyframes pulseCircle{0%,100%{transform:scale(.9);opacity:.3}50%{transform:scale(1.1);opacity:.8}}
-.product-image img{width:100%;height:100%;object-fit:cover;position:relative;z-index:2}
+.product-image img{width:100%;height:100%;object-fit:contain;object-position:center;position:relative;z-index:2;padding:12px;filter:drop-shadow(0 12px 15px rgba(0,0,0,.10));transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .4s ease}
 .image-placeholder{position:relative;z-index:3;font-size:13px;color:#999}
 .badge{position:absolute;top:13px;right:13px;background:#111;color:white;font-size:10px;
 padding:7px 11px;border-radius:20px;z-index:5}
@@ -1002,7 +1005,252 @@ footer{
 .feature{position:relative}.why-title .why-subtitle{max-width:600px;margin:12px auto 0;color:#666;font-size:12px;line-height:1.8}.feature-icon{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,164,92,.25);border-radius:12px;color:#c9a45c;font-size:11px;font-weight:900;margin-bottom:17px;background:rgba(201,164,92,.05)}.feature-line{width:35px;height:1px;background:#c9a45c;margin-top:20px;opacity:.5;transition:.3s}.feature:hover .feature-line{width:70px;opacity:1}.feature-number{position:absolute;top:24px;left:25px;color:#444}.why-bottom{max-width:1100px;margin:38px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;color:#444;font-size:8px;letter-spacing:2px}
 .social-section{background:#080808;color:#fff;padding:75px 7%;border-top:1px solid rgba(255,255,255,.06)}.social-inner{max-width:1050px;margin:auto;text-align:center}.social-section h2{font-size:34px;margin-bottom:8px}.social-section p{color:#666;font-size:12px;margin-bottom:30px}.social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.social-card{text-decoration:none;color:#fff;text-align:right;padding:22px;border:1px solid rgba(255,255,255,.08);border-radius:15px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015));transition:.3s}.social-card:hover{transform:translateY(-5px);border-color:rgba(201,164,92,.35);box-shadow:0 18px 45px rgba(0,0,0,.25)}.social-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:#fff;color:#080808;font-size:10px;font-weight:900;margin-bottom:18px}.social-card strong{display:block;font-size:14px;margin-bottom:5px}.social-card span{color:#666;font-size:10px}
 @media(max-width:600px){.cart-panel{max-width:100%;width:100%}.cart-header-pro{padding:24px 20px 18px}#cartItems{padding:0 20px}.coupon-box-pro,.cart-summary-pro{margin-left:20px;margin-right:20px;padding-left:0;padding-right:0}.cart-summary-pro{margin-left:0;margin-right:0;padding:18px 20px 22px}.account-content-pro{padding:27px 19px}.account-actions-pro{grid-template-columns:1fr}.social-grid{grid-template-columns:1fr}.social-section{padding:60px 5%}.social-section h2{font-size:28px}.why-bottom{flex-direction:column;gap:8px;text-align:center}}
-</style></head>
+
+/* DXTR PRODUCT IMAGE / MOTION FINISH */
+.products-grid{align-items:stretch;}
+.product{
+  isolation:isolate;
+  border-radius:20px;
+  background:linear-gradient(160deg,#fff 0%,#fbfaf7 100%);
+  box-shadow:0 12px 32px rgba(15,15,15,.045);
+  transition:transform .42s cubic-bezier(.2,.8,.2,1),box-shadow .42s ease,border-color .35s ease;
+}
+.product-image{
+  height:270px;
+  margin:10px 10px 0;
+  border-radius:15px;
+  padding:12px;
+  background:
+    radial-gradient(ellipse at 50% 48%,rgba(201,164,92,.17),transparent 43%),
+    linear-gradient(145deg,#f8f7f2 0%,#eeede7 52%,#f8f7f2 100%);
+  border:1px solid rgba(201,164,92,.15);
+}
+.product-image::before{
+  width:clamp(115px,65%,180px);
+  height:clamp(115px,65%,180px);
+  border-color:rgba(201,164,92,.28);
+  box-shadow:0 0 0 10px rgba(201,164,92,.025),0 0 0 22px rgba(201,164,92,.018);
+  z-index:1;
+}
+.product-image::after{
+  font-size:clamp(38px,5vw,62px);
+  letter-spacing:4px;
+  color:rgba(22,22,22,.035);
+  z-index:0;
+}
+.product-image img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain!important;
+  object-position:center center;
+  padding:8px;
+}
+.product:hover .product-image img{
+  transform:scale(1.045) translateY(-2px);
+  filter:drop-shadow(0 17px 19px rgba(0,0,0,.15));
+}
+.product-info{padding:20px 20px 22px;}
+.product-info h3{line-height:1.55;}
+.product-description{line-height:1.8;}
+.product-bottom{align-items:center;}
+.add-button{min-height:43px;border:1px solid rgba(201,164,92,.12);}
+.add-button:active{transform:scale(.98);}
+/* Consistent full-image display on phones too */
+@media(max-width:600px){
+  .products-grid{gap:14px;}
+  .product{border-radius:17px;}
+  .product-image{height:205px;margin:7px 7px 0;padding:8px;border-radius:12px;}
+  .product-image img{padding:5px;}
+  .product-info{padding:13px 12px 15px;}
+}
+@media(max-width:430px){
+  .products-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .product-image{height:185px;}
+  .product-info h3{font-size:14px;}
+  .product-description{font-size:10px;min-height:44px;}
+  .product-bottom{gap:8px;}
+  .price{font-size:14px;}
+  .add-button{padding:10px 7px;font-size:11px;}
+}
+/* Smooth reveal without hiding products if JS is unavailable */
+.reveal-on-scroll{transition:opacity .65s ease,transform .65s cubic-bezier(.2,.8,.2,1);}
+.reveal-on-scroll:not(.visible){opacity:0;transform:translateY(18px);}
+.reveal-on-scroll.visible{opacity:1;transform:translateY(0);}
+@media(prefers-reduced-motion:reduce){
+  .product,.product-image img,.reveal-on-scroll{transition:none!important;animation:none!important;transform:none!important;}
+}
+
+</style>
+
+<style id="dxtr-luxury-brand-refresh">
+:root{
+  --black:#0b090a;
+  --black2:#171114;
+  --gold:#c8a15a;
+  --gold2:#e5c27a;
+  --burgundy:#641f32;
+  --burgundy2:#842d43;
+  --ivory:#f7f3ed;
+  --border:#e7dfd5;
+}
+*{font-family:'Cairo','Manrope',Arial,sans-serif}
+body{background:var(--ivory);color:#21191b}
+.top-bar{background:linear-gradient(90deg,#090809,#241018,#090809);border-bottom-color:rgba(200,161,90,.35);letter-spacing:1px}
+header{background:rgba(11,9,10,.96);border-bottom:1px solid rgba(200,161,90,.28);box-shadow:0 8px 28px rgba(24,10,14,.08)}
+.logo{letter-spacing:3.5px}
+.logo span{color:var(--gold2)}
+nav a:hover{color:var(--gold2)}
+.account-button{border-color:rgba(200,161,90,.22);background:rgba(255,255,255,.035)}
+.account-button:hover{border-color:var(--gold);color:var(--gold2)}
+.cart-button{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#171014;box-shadow:0 6px 18px rgba(200,161,90,.12)}
+.cart-button:hover{background:linear-gradient(135deg,#f0d28d,#c8a15a)}
+.hero{background:radial-gradient(ellipse at 80% 25%,rgba(100,31,50,.11),transparent 35%),radial-gradient(circle at 12% 78%,rgba(200,161,90,.13),transparent 30%),linear-gradient(135deg,#fbf8f3,#f1ebe3)}
+.hero h1 span,.hero small{color:var(--burgundy)}
+.hero-button{background:linear-gradient(135deg,#741f39,#4f1729);color:#fff;box-shadow:0 10px 25px rgba(100,31,50,.16)}
+.hero-button:hover{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1b1014}
+.hero-second-button{border-color:#d8c8bd;background:rgba(255,255,255,.55)}
+.title h2:after,.why-title h2:after{background:linear-gradient(90deg,var(--burgundy),var(--gold))!important}
+.product{border-color:#e8dfd5;background:linear-gradient(155deg,#fffdfa,#f6f0e8);box-shadow:0 10px 30px rgba(42,20,27,.055)}
+.product:hover{border-color:rgba(100,31,50,.28);box-shadow:0 20px 42px rgba(42,20,27,.11)}
+.product-image{height:228px;background:radial-gradient(ellipse at 50% 45%,rgba(200,161,90,.19),transparent 45%),linear-gradient(145deg,#fdfaf5,#eee5dc);border-color:rgba(100,31,50,.11)}
+.product-image::before{border-color:rgba(100,31,50,.18);box-shadow:0 0 0 10px rgba(100,31,50,.018),0 0 0 22px rgba(200,161,90,.025)}
+.product-image::after{color:rgba(100,31,50,.035)}
+.product-info h3{color:#26171d;letter-spacing:-.2px}
+.product-category{color:var(--burgundy)!important}
+.price{color:#641f32!important}
+.add-button{background:linear-gradient(135deg,#6b2036,#4d1728)!important;color:#fff!important;border-color:rgba(100,31,50,.18)!important;border-radius:10px!important}
+.add-button:hover{background:linear-gradient(135deg,var(--gold2),var(--gold))!important;color:#1a1013!important;box-shadow:0 10px 22px rgba(100,31,50,.13)}
+.category-btn:hover{border-color:var(--burgundy)!important}
+.feature-icon{color:var(--gold2);background:rgba(100,31,50,.17);border-color:rgba(200,161,90,.32)}
+.feature-line{background:linear-gradient(90deg,var(--burgundy),var(--gold))}
+.social-section{background:radial-gradient(circle at 85% 20%,rgba(100,31,50,.22),transparent 28%),linear-gradient(135deg,#0a0809,#1b1014 55%,#090809);border-top-color:rgba(200,161,90,.2)}
+.social-kicker,.cart-kicker,.account-kicker{color:var(--gold2)}
+.social-card:hover{border-color:rgba(200,161,90,.5)}
+/* Refined cart: compact thumbnail + tidy information hierarchy */
+.cart-panel{background:linear-gradient(165deg,#120d10,#0b090a 62%);border-left-color:rgba(200,161,90,.3);box-shadow:18px 0 70px rgba(20,5,11,.45)}
+.cart-header-pro{background:linear-gradient(115deg,rgba(100,31,50,.22),transparent 65%);border-bottom-color:rgba(200,161,90,.15)}
+.cart-header-pro h2{font-size:24px;letter-spacing:-.5px}
+.cart-subtitle{color:#a99da0}
+.cart-progress span{width:100%;background:linear-gradient(90deg,var(--burgundy),var(--gold2))}
+.cart-mini-status{border-color:rgba(200,161,90,.14);background:rgba(255,255,255,.025)}
+.status-dot{background:var(--gold2);box-shadow:0 0 9px rgba(200,161,90,.55)}
+#cartItems{padding:4px 22px 10px}
+.cart-item{display:grid;grid-template-columns:68px minmax(0,1fr);gap:13px;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.075)}
+.cart-item-thumb{width:68px;height:68px;border-radius:13px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(circle at 50% 35%,rgba(200,161,90,.16),transparent 65%),linear-gradient(145deg,#f8f0e6,#e8d9ca);border:1px solid rgba(200,161,90,.24);flex:0 0 68px}
+.cart-item-thumb img{display:block;width:100%;height:100%;object-fit:contain;padding:5px;filter:drop-shadow(0 4px 7px rgba(0,0,0,.12))}
+.cart-item-thumb span{font-family:'Manrope',sans-serif;font-size:12px;font-weight:900;letter-spacing:2px;color:#641f32}
+.cart-item-thumb.no-image{background:linear-gradient(145deg,#25151c,#120d10)}
+.cart-item-thumb.no-image span{color:var(--gold2)}
+.cart-item-details{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.cart-item-name{font-size:12px;line-height:1.7;color:#f8f0e8;margin:0 0 4px;font-weight:700;max-width:100%}
+.cart-item-price{font-size:10px;color:var(--gold2);margin-bottom:8px}
+.quantity{margin-top:0;gap:6px;align-items:center;flex-wrap:wrap;width:100%}
+.quantity button{width:27px;height:27px;border-radius:8px;border-color:rgba(200,161,90,.2);background:#1c1217;font-size:14px}
+.quantity span{min-width:20px;text-align:center;color:#f4e8dc;font-size:12px}
+.quantity .delete{margin-right:auto;width:auto;padding:0 9px;border-color:rgba(255,255,255,.08);font-size:10px;color:#a99da0}
+.quantity .delete:hover{border-color:rgba(132,45,67,.7);background:rgba(100,31,50,.2);color:#fff}
+.cart-empty-pro{min-height:190px}
+.cart-empty-pro .empty-mark{color:rgba(200,161,90,.13)}
+.coupon-box-pro{border-top-color:rgba(200,161,90,.15)}
+.coupon-title{color:#f0e5dd;font-weight:700}
+.coupon-phone,.coupon-row input{border-radius:10px!important;background:#171014!important;border-color:rgba(200,161,90,.16)!important}
+.coupon-phone:focus,.coupon-row input:focus{border-color:var(--gold)!important;outline:none}
+.coupon-button{background:linear-gradient(135deg,var(--gold2),var(--gold));border-radius:9px}
+.dx-points-select{border-color:rgba(200,161,90,.25);background:#171014}
+.cart-summary-pro{background:linear-gradient(180deg,#110c0f,#090809);border-top-color:rgba(200,161,90,.17)}
+.cart-total-card{border-color:rgba(200,161,90,.3);background:radial-gradient(circle at 100% 0,rgba(100,31,50,.22),transparent 55%),linear-gradient(135deg,rgba(200,161,90,.08),rgba(255,255,255,.02))}
+.cart-total-card strong{font-size:22px;color:#fff}
+.checkout-button-pro{border-radius:11px;background:linear-gradient(135deg,var(--gold2),var(--gold));font-weight:800;box-shadow:0 8px 24px rgba(200,161,90,.12)}
+.checkout-button-pro:hover{background:linear-gradient(135deg,#7b263f,#54192c);color:#fff}
+.cart-trust span{color:var(--gold2)}
+/* More refined controls across checkout and account forms */
+input,textarea,select{accent-color:var(--burgundy)}
+button{font-weight:700;letter-spacing:0}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media(max-width:600px){
+ .product-image{height:178px;margin:7px 7px 0;padding:7px}
+ .product-info{padding:13px 11px 14px}
+ .cart-panel{width:100%;max-width:100%}
+ #cartItems{padding:4px 18px 10px}
+ .cart-item{grid-template-columns:62px minmax(0,1fr);gap:11px;padding:12px 0}
+ .cart-item-thumb{width:62px;height:62px;flex-basis:62px;border-radius:11px}
+ .cart-item-name{font-size:12px}
+}
+@media(max-width:430px){.product-image{height:160px}.product-info h3{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+
+
+<style id="dxtr-restore-original-colors">
+/* Restore DXTR's original palette; keep the upgraded layout and compact cart. */
+:root{
+  --black:#0d0d0d;--black2:#151515;--gold:#c9a45c;--gold2:#e0bd76;
+  --white:#fff;--bg:#f5f5f2;--gray:#777;--border:#e5e5e1;
+  --burgundy:#641f32;--burgundy2:#842d43;--ivory:#f5f5f2;
+}
+body{background:#f5f5f2!important;color:#111!important}
+.top-bar{background:#080808!important;border-bottom-color:rgba(201,164,92,.15)!important}
+header{background:rgba(13,13,13,.94)!important;border-bottom-color:rgba(201,164,92,.18)!important;box-shadow:none!important}
+.logo span{color:var(--gold)!important}
+nav a:hover{color:#fff!important}
+.account-button{border-color:#333!important;background:rgba(255,255,255,.08)!important}
+.account-button:hover{border-color:var(--gold)!important;color:var(--gold)!important}
+.cart-button{background:var(--gold)!important;color:#111!important;box-shadow:none!important}
+.cart-button:hover{background:var(--gold2)!important}
+.hero{background:radial-gradient(circle at 80% 20%,rgba(201,164,92,.18),transparent 27%),radial-gradient(circle at 15% 80%,rgba(201,164,92,.08),transparent 30%),linear-gradient(135deg,#fff 0%,#f2f2ee 100%)!important}
+.hero h1 span,.hero small{color:#a17b35!important}
+.hero-button{background:#c9a45c!important;color:#111!important;box-shadow:0 8px 22px rgba(201,164,92,.18)!important}
+.hero-button:hover{background:#e0bd76!important;color:#111!important}
+.hero-second-button{border-color:#ddd!important;background:rgba(255,255,255,.55)!important;color:#222!important}
+.title h2:after,.why-title h2:after{background:linear-gradient(90deg,#a17b35,#c9a45c)!important}
+.product{border-color:#e5e5e1!important;background:#fff!important;box-shadow:0 10px 28px rgba(0,0,0,.045)!important}
+.product:hover{border-color:rgba(201,164,92,.45)!important;box-shadow:0 18px 38px rgba(0,0,0,.09)!important}
+/* Keep the smaller, full product image, but remove the bright ivory panel that washed it out. */
+.product-image{background:radial-gradient(ellipse at 50% 45%,rgba(201,164,92,.16),transparent 45%),linear-gradient(135deg,#252321 0%,#171616 55%,#211b1b 100%)!important;border-color:rgba(201,164,92,.2)!important}
+.product-image::before{border-color:rgba(201,164,92,.25)!important;box-shadow:0 0 0 10px rgba(201,164,92,.025),0 0 0 22px rgba(201,164,92,.018)!important}
+.product-image::after{color:rgba(255,255,255,.045)!important}
+.product-info h3{color:#171717!important}
+.product-category{color:#a17b35!important}
+.price{color:#a17b35!important}
+.add-button{background:#111!important;color:#fff!important;border-color:rgba(201,164,92,.25)!important}
+.add-button:hover{background:var(--gold)!important;color:#111!important;box-shadow:0 10px 22px rgba(201,164,92,.16)!important}
+.category-btn:hover{border-color:var(--gold)!important}
+.feature-icon{color:var(--gold)!important;background:rgba(201,164,92,.05)!important;border-color:rgba(201,164,92,.25)!important}
+.feature-line{background:var(--gold)!important}
+.social-section{background:radial-gradient(circle at 85% 20%,rgba(201,164,92,.08),transparent 28%),linear-gradient(135deg,#080808,#151515 55%,#080808)!important;border-top-color:rgba(201,164,92,.18)!important}
+.social-kicker,.cart-kicker,.account-kicker{color:var(--gold2)!important}
+.social-card{background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012))!important;border-color:rgba(255,255,255,.09)!important}
+.social-card:hover{border-color:rgba(201,164,92,.5)!important}
+/* Premium social badges with real vector marks instead of IG / FB / WA letters. */
+.social-icon{width:48px!important;height:48px!important;border-radius:15px!important;display:flex!important;align-items:center!important;justify-content:center!important;margin-bottom:18px!important;background:linear-gradient(145deg,#1e1b1b,#0c0c0c)!important;color:var(--gold2)!important;border:1px solid rgba(201,164,92,.3)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 22px rgba(0,0,0,.22)!important;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease!important}
+.social-icon svg{width:23px;height:23px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.social-card:nth-child(1) .social-icon{color:#e6c6b7}
+.social-card:nth-child(2) .social-icon{color:#d9b66d}
+.social-card:nth-child(3) .social-icon{color:#b8d5c0}
+.social-card:hover .social-icon{transform:translateY(-3px) rotate(-3deg);border-color:rgba(224,189,118,.75)!important;box-shadow:0 10px 26px rgba(201,164,92,.13)!important}
+.social-card strong{color:#f7f4ef!important}
+.social-card span{color:#999!important}
+/* Keep the cart dark and premium; do not affect its upgraded thumbnail layout. */
+.cart-panel{background:linear-gradient(165deg,#151515,#0d0d0d 62%)!important;border-left-color:rgba(201,164,92,.28)!important}
+.cart-header-pro{background:linear-gradient(115deg,rgba(201,164,92,.09),transparent 65%)!important;border-bottom-color:rgba(201,164,92,.15)!important}
+.cart-progress span{background:linear-gradient(90deg,#a17b35,#e0bd76)!important}
+.cart-mini-status{border-color:rgba(201,164,92,.14)!important;background:rgba(255,255,255,.025)!important}
+.status-dot{background:var(--gold2)!important;box-shadow:0 0 9px rgba(201,164,92,.5)!important}
+.cart-item-thumb{background:radial-gradient(circle at 50% 35%,rgba(201,164,92,.18),transparent 65%),linear-gradient(145deg,#f0f0ed,#dedbd4)!important;border-color:rgba(201,164,92,.24)!important}
+.cart-item-thumb span{color:#222!important}
+.cart-item-thumb.no-image{background:linear-gradient(145deg,#252321,#121212)!important}
+.cart-item-thumb.no-image span{color:var(--gold2)!important}
+.cart-item-price{color:var(--gold2)!important}
+.quantity button{border-color:rgba(201,164,92,.2)!important;background:#1c1c1c!important}
+.coupon-phone,.coupon-row input{background:#171717!important;border-color:rgba(201,164,92,.16)!important}
+.coupon-button,.checkout-button-pro{background:linear-gradient(135deg,var(--gold2),var(--gold))!important;color:#111!important}
+.cart-total-card{border-color:rgba(201,164,92,.3)!important;background:radial-gradient(circle at 100% 0,rgba(201,164,92,.1),transparent 55%),linear-gradient(135deg,rgba(201,164,92,.07),rgba(255,255,255,.02))!important}
+.cart-trust span{color:var(--gold2)!important}
+input,textarea,select{accent-color:var(--gold)!important}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline-color:var(--gold)!important}
+</style>
+
+</head>
 
 <body>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -1314,9 +1562,9 @@ onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 </div>
 
 <section class="social-section" id="social"><div class="social-inner"><div class="social-kicker">FOLLOW DXTR</div><h2>خليك قريب من DXTR</h2><p>تابع آخر المنتجات والتصميمات والشغل الجديد، أو كلمنا مباشرة.</p><div class="social-grid">
-<a class="social-card" href="https://www.instagram.com/dxtreg/" target="_blank" rel="noopener"><div class="social-icon">IG</div><strong>Instagram</strong><span>@dxtreg</span></a>
-<a class="social-card" href="https://web.facebook.com/people/DXTR/61564692044644/" target="_blank" rel="noopener"><div class="social-icon">FB</div><strong>Facebook</strong><span>DXTR</span></a>
-<a class="social-card" href="https://wa.me/201033254766" target="_blank" rel="noopener"><div class="social-icon">WA</div><strong>WhatsApp</strong><span>01033254766</span></a>
+<a class="social-card" href="https://www.instagram.com/dxtreg/" target="_blank" rel="noopener"><div class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.7" cy="6.5" r=".8" fill="currentColor" stroke="none"></circle></svg></div><strong>Instagram</strong><span>@dxtreg</span></a>
+<a class="social-card" href="https://web.facebook.com/people/DXTR/61564692044644/" target="_blank" rel="noopener"><div class="social-icon" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2c-.3 0-1.4-.2-2.6-.2-2.7 0-4.5 1.6-4.5 4.6v2.2H7.5V13h2.9v8"></path></svg></div><strong>Facebook</strong><span>DXTR</span></a>
+<a class="social-card" href="https://wa.me/201033254766" target="_blank" rel="noopener"><div class="social-icon" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 11.7a8.1 8.1 0 0 1-12 7.1L3.5 20l1.2-4.5a8.1 8.1 0 1 1 15.5-3.8Z"></path><path d="M9 8.2c.2-.4.4-.4.7-.4h.4c.2 0 .3.1.4.4l.7 1.7c.1.2 0 .4-.1.6l-.5.6c-.2.2-.2.3-.1.5.5.9 1.2 1.6 2.1 2.1.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.6.8c.2.1.3.2.3.4 0 .3-.2 1.1-.7 1.4-.5.4-1.1.6-1.8.4-1-.2-2.2-.8-3.3-1.8-1.2-1.1-2-2.4-2.2-3.4-.2-.9.2-1.7.7-2.3Z"></path></svg></div><strong>WhatsApp</strong><span>01033254766</span></a>
 </div></div></section><footer>
 © 2026 <strong>DXTR</strong> — جميع الحقوق محفوظة
 </footer>
@@ -2311,12 +2559,12 @@ await supabaseClient
 
 if(error){
 
-console.error(error);
+console.error("DXTR storefront products load error:",error);
 
 grid.innerHTML=
 `<div class="products-error">
-حصلت مشكلة في تحميل المنتجات.<br>
-حاول تعمل Refresh للصفحة.
+تعذر تحميل المنتجات من قاعدة البيانات.<br>
+${escapeHTML(error.message || "راجع صلاحيات جدول products في Supabase.")}
 </div>`;
 
 return;
@@ -2324,6 +2572,15 @@ return;
 }
 
 products=data||[];
+
+if(!products.length){
+  grid.innerHTML=`<div class="no-products" style="grid-column:1/-1">
+  مفيش منتجات ظاهرة حاليًا.<br>
+  افتح لوحة الإدارة ← المنتجات، وتأكد إن المنتجات موجودة ومفعّل لها «المنتج ظاهر في المتجر».
+  </div>`;
+  renderCategories();
+  return;
+}
 
 renderCategories();
 renderProducts();
@@ -2617,6 +2874,8 @@ name:product.name,
 
 price:Number(product.price),
 
+image_url:product.image_url || "",
+
 quantity:1
 
 });
@@ -2703,15 +2962,13 @@ cartItems.innerHTML+=`
 
 <div class="cart-item">
 
-<div class="cart-item-name">
-${escapeHTML(item.name)}
+<div class="cart-item-thumb">
+${item.image_url ? `<img src="${escapeHTML(item.image_url)}" alt="${escapeHTML(item.name)}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('no-image')">` : `<span>DXTR</span>`}
 </div>
 
-<div class="cart-item-price">
-${Number(item.price).toLocaleString("ar-EG")}
-جنيه للقطعة
-</div>
-
+<div class="cart-item-details">
+<div class="cart-item-name">${escapeHTML(item.name)}</div>
+<div class="cart-item-price">${Number(item.price).toLocaleString("ar-EG")} جنيه للقطعة</div>
 <div class="quantity">
 
 <button onclick="changeQuantity(${index},-1)">-</button>
@@ -2725,6 +2982,7 @@ onclick="removeItem(${index})">
 حذف
 </button>
 
+</div>
 </div>
 
 </div>
@@ -4157,6 +4415,32 @@ closeSuccess();
 
 })();
 </script>
+
+
+<style id="dxtr-fix-dark-background-final">
+/* Restore DXTR's dark background while preserving the upgraded layout and social icons. */
+html,body{background:#0d0d0d!important;color:#f5f5f5!important}
+main,.products,.why,.why-section,.features-section,.how-section,.reviews-section{background:#0d0d0d!important;color:#f5f5f5!important}
+.hero{background:radial-gradient(circle at 80% 20%,rgba(201,164,92,.16),transparent 28%),radial-gradient(circle at 15% 80%,rgba(100,31,50,.22),transparent 32%),linear-gradient(135deg,#080808 0%,#151515 58%,#0b0b0b 100%)!important;color:#fff!important}
+.hero h1,.hero h2,.hero p,.hero small{color:#f5f5f5!important}
+.hero h1 span,.hero small{color:#e0bd76!important}
+.hero-second-button{border-color:rgba(201,164,92,.4)!important;background:rgba(255,255,255,.04)!important;color:#f5f5f5!important}
+.products{background:#0d0d0d!important}
+.title h2,.why-title h2,.title p{color:#f5f5f5!important}
+.title small{color:#e0bd76!important}
+.product{background:#151515!important;border-color:rgba(201,164,92,.18)!important;box-shadow:0 10px 28px rgba(0,0,0,.28)!important}
+.product:hover{background:#191919!important;border-color:rgba(201,164,92,.48)!important;box-shadow:0 18px 38px rgba(0,0,0,.4)!important}
+.product-info h3{color:#fff!important}
+.product-info p,.product-description,.product-meta{color:#aaa!important}
+.product-toolbar,.category-list,.categories{color:#eee!important}
+.search-box input,.product-toolbar input,.category-btn{background:#151515!important;color:#f5f5f5!important;border-color:#333!important}
+.category-btn.active,.category-btn:hover{border-color:#c9a45c!important;color:#e0bd76!important}
+.feature,.feature-card{background:#151515!important;color:#f5f5f5!important;border-color:#292929!important}
+.feature h3,.feature strong{color:#fff!important}
+.feature p,.feature span{color:#aaa!important}
+footer,.footer{background:#080808!important;color:#aaa!important}
+/* Keep all newly designed social icons and the cart styling intact. */
+</style>
 
 </body>
 </html>

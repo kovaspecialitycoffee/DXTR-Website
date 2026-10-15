@@ -2247,17 +2247,15 @@ tr:hover td {
                 </div>
 
 
-                <div class="input-group">
-
-                    <label>
-                        رابط صورة المنتج
-                    </label>
-
-                    <input
-                        id="productImage"
-                        placeholder="https://..."
-                    >
-
+                <div class="input-group full">
+                    <label for="productImageFile">صورة المنتج (اختار صورة من جهازك)</label>
+                    <input id="productImageFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"
+                           style="padding:10px;background:#fafafa">
+                    <small style="display:block;color:#777;margin-top:7px">الصيغ: JPG / PNG / WEBP — الحد الأقصى 5 ميجابايت. لو بتعدّل المنتج ومش هتغيّر الصورة، سيب الاختيار فاضي.</small>
+                    <div id="productImagePreviewWrap" style="display:none;margin-top:12px">
+                      <img id="productImagePreview" alt="معاينة صورة المنتج" style="max-width:180px;max-height:180px;object-fit:contain;border:1px solid #ddd;border-radius:10px;padding:5px">
+                    </div>
+                    <input id="productImage" type="hidden">
                 </div>
 
 
@@ -2653,16 +2651,17 @@ document
 
             console.error("Login error:", error);
 
-            errorBox.textContent =
-                "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
-
-            document
-                .getElementById("loginPassword")
-                .value = "";
-
-            document
-                .getElementById("loginPassword")
-                .focus();
+            // عرض رسالة مفيدة بدل إخفاء سبب الخطأ الحقيقي
+            const message = (error.message || "").toLowerCase();
+            if (message.includes("invalid login credentials")) {
+                errorBox.textContent = "الإيميل أو كلمة المرور غير صحيحين. تأكد إنك بتستخدم حساب الأدمن الموجود في Supabase Authentication.";
+            } else if (message.includes("email not confirmed")) {
+                errorBox.textContent = "الحساب لسه محتاج تأكيد البريد الإلكتروني من Supabase.";
+            } else if (message.includes("fetch") || message.includes("network")) {
+                errorBox.textContent = "مش قادر أوصل لـ Supabase. اتأكد من الإنترنت وإنك فاتح الموقع من خلال اتصال إنترنت شغال.";
+            } else {
+                errorBox.textContent = "فشل تسجيل الدخول: " + (error.message || "خطأ غير معروف");
+            }
 
             return;
         }
@@ -4703,11 +4702,9 @@ async function loadProducts() {
 
     if (error) {
 
-        showToast(
-            "حصل خطأ في تحميل المنتجات"
-        );
+        showToast("تعذر تحميل المنتجات من قاعدة البيانات: " + (error.message || "خطأ غير معروف"));
 
-        console.error(error);
+        console.error("DXTR products load error:", error);
 
         return;
 
@@ -4938,6 +4935,10 @@ function openProductModal() {
         .value = "";
 
 
+    document.getElementById("productImageFile").value = "";
+    document.getElementById("productImagePreviewWrap").style.display = "none";
+    document.getElementById("productImage").value = "";
+
     document
         .getElementById("productActive")
         .checked = true;
@@ -4993,10 +4994,14 @@ function editProduct(id) {
             product.category || "أخرى";
 
 
-    document
-        .getElementById("productImage")
-        .value =
-            product.image_url || "";
+    document.getElementById("productImage").value = product.image_url || "";
+    document.getElementById("productImageFile").value = "";
+    if (product.image_url) {
+        document.getElementById("productImagePreview").src = product.image_url;
+        document.getElementById("productImagePreviewWrap").style.display = "block";
+    } else {
+        document.getElementById("productImagePreviewWrap").style.display = "none";
+    }
 
 
     document
@@ -5031,6 +5036,44 @@ function editProduct(id) {
 
 
 /* =====================================================
+   PRODUCT IMAGE UPLOAD
+===================================================== */
+document.getElementById("productImageFile").addEventListener("change", function () {
+    const file = this.files && this.files[0];
+    const wrap = document.getElementById("productImagePreviewWrap");
+    if (!file) {
+        const currentUrl = document.getElementById("productImage").value;
+        if (currentUrl) {
+            document.getElementById("productImagePreview").src = currentUrl;
+            wrap.style.display = "block";
+        } else {
+            wrap.style.display = "none";
+        }
+        return;
+    }
+    if (!/^image\/(jpeg|png|webp|gif)$/.test(file.type) || file.size > 5 * 1024 * 1024) {
+        showToast("اختار صورة JPG أو PNG أو WEBP أو GIF بحجم أقل من 5 ميجابايت");
+        this.value = "";
+        return;
+    }
+    document.getElementById("productImagePreview").src = URL.createObjectURL(file);
+    wrap.style.display = "block";
+});
+
+async function uploadDXTRProductImage(file) {
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!allowed.includes(file.type)) throw new Error("صيغة الصورة غير مدعومة");
+    if (file.size > 5 * 1024 * 1024) throw new Error("حجم الصورة أكبر من 5 ميجابايت");
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const path = `products/${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${ext}`;
+    const { error } = await supabaseClient.storage.from("product-images").upload(path, file, {
+        cacheControl: "3600", upsert: false, contentType: file.type
+    });
+    if (error) throw error;
+    return supabaseClient.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+}
+
+/* =====================================================
    SAVE PRODUCT
 ===================================================== */
 
@@ -5048,6 +5091,15 @@ document
                 .getElementById("productId")
                 .value;
 
+
+        const imageFile = document.getElementById("productImageFile").files[0];
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton ? submitButton.textContent : "";
+        if (submitButton) { submitButton.disabled = true; submitButton.textContent = "جاري حفظ المنتج..."; }
+
+        let uploadedImageUrl = document.getElementById("productImage").value.trim() || null;
+        try {
+            if (imageFile) uploadedImageUrl = await uploadDXTRProductImage(imageFile);
 
         const productData = {
 
@@ -5069,11 +5121,7 @@ document
                     .getElementById("productCategory")
                     .value,
 
-            image_url:
-                document
-                    .getElementById("productImage")
-                    .value
-                    .trim() || null,
+            image_url: uploadedImageUrl,
 
             description:
                 document
@@ -5143,6 +5191,17 @@ document
                 ? "تم تعديل المنتج"
                 : "تم إضافة المنتج"
         );
+        } catch (uploadOrSaveError) {
+            console.error("Product save/upload error:", uploadOrSaveError);
+            const message = uploadOrSaveError?.message || "خطأ غير معروف";
+            showToast(message.includes("Bucket not found")
+                ? "لا يوجد مجلد الصور product-images في Supabase. نفّذ إعدادات التخزين المرفقة."
+                : message.includes("row-level security") || message.includes("permission")
+                    ? "صلاحيات رفع الصور غير مفعلة في Supabase Storage."
+                    : "تعذر حفظ المنتج أو رفع الصورة: " + message);
+        } finally {
+            if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalButtonText || "حفظ المنتج"; }
+        }
 
     }
 );
@@ -6757,7 +6816,19 @@ document.addEventListener(
    START
 ===================================================== */
 
-checkAuth();
+// تحقق واضح من تحميل مكتبة Supabase عند فتح لوحة الأدمن
+if (!window.supabase || !supabaseClient) {
+    const loginError = document.getElementById("loginError");
+    if (loginError) {
+        loginError.textContent = "مكتبة تسجيل الدخول لم تتحمل. راجع اتصال الإنترنت ثم أعد تحميل الصفحة.";
+    }
+} else {
+    checkAuth().catch((err) => {
+        console.error("Auth check error:", err);
+        const loginError = document.getElementById("loginError");
+        if (loginError) loginError.textContent = "تعذر التحقق من الجلسة. أعد تحميل الصفحة وحاول مرة أخرى.";
+    });
+}
 
 </script>
 
